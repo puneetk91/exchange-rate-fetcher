@@ -1,10 +1,12 @@
 import client.ExchangeRateDataClient;
 import client.MockExchangeRateDataClient;
 import dao.ExchangeRateDao;
+import dto.ExchangeRateFillerConfig;
 import entity.ExchangeRate;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import managed.ExchangeRateFillerJob;
@@ -47,7 +49,13 @@ public class ExchangeRateApplication extends Application<ExchangeRateConfigurati
 
     @Override
     public void initialize(Bootstrap<ExchangeRateConfiguration> bootstrap) {
-
+        bootstrap.addBundle(hibernate);
+        bootstrap.addBundle(new MigrationsBundle<ExchangeRateConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(ExchangeRateConfiguration configuration) {
+                return configuration.getDatabase();
+            }
+        });
     }
 
     private final HibernateBundle<ExchangeRateConfiguration> hibernate = new HibernateBundle<ExchangeRateConfiguration>(

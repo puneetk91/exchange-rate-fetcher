@@ -5,8 +5,10 @@ import dto.ExchangeRateDataClientResponse;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Currency;
 
+/*
+* This is the client to fetch data from 3rd party or any server for exchange rates
+* */
 public class MockExchangeRateDataClient implements ExchangeRateDataClient {
 
     @Override

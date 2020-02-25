@@ -2,3 +2,5 @@
 .idea/*
 .idea
 .class
+target/*
+logs/*

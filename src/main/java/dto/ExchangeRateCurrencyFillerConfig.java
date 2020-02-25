@@ -8,17 +8,19 @@ public class ExchangeRateCurrencyFillerConfig {
 
     private CurrencyCode targetCurrency;
 
-    private boolean isBackfillEnabled;
+    private boolean backfillEnabled;
 
     private Date backfillFrom;
 
     private Date backfillTill;
 
+    public ExchangeRateCurrencyFillerConfig() {}
+
     public ExchangeRateCurrencyFillerConfig(CurrencyCode sourceCurrency, CurrencyCode targetCurrency,
-                                            boolean isBackfillEnabled, Date backfillFrom, Date backfillTill) {
+                                            boolean backfillEnabled, Date backfillFrom, Date backfillTill) {
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
-        this.isBackfillEnabled = isBackfillEnabled;
+        this.backfillEnabled = backfillEnabled;
         this.backfillFrom = backfillFrom;
         this.backfillTill = backfillTill;
     }
@@ -27,19 +29,39 @@ public class ExchangeRateCurrencyFillerConfig {
         return sourceCurrency;
     }
 
+    public void setSourceCurrency(CurrencyCode sourceCurrency) {
+        this.sourceCurrency = sourceCurrency;
+    }
+
     public CurrencyCode getTargetCurrency() {
         return targetCurrency;
     }
 
+    public void setTargetCurrency(CurrencyCode targetCurrency) {
+        this.targetCurrency = targetCurrency;
+    }
+
     public boolean isBackfillEnabled() {
-        return isBackfillEnabled;
+        return backfillEnabled;
+    }
+
+    public void setBackfillEnabled(boolean backfillEnabled) {
+        this.backfillEnabled = backfillEnabled;
     }
 
     public Date getBackfillFrom() {
         return backfillFrom;
     }
 
+    public void setBackfillFrom(Date backfillFrom) {
+        this.backfillFrom = backfillFrom;
+    }
+
     public Date getBackfillTill() {
         return backfillTill;
+    }
+
+    public void setBackfillTill(Date backfillTill) {
+        this.backfillTill = backfillTill;
     }
 }

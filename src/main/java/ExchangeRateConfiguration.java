@@ -11,9 +11,9 @@ public class ExchangeRateConfiguration extends Configuration {
 
     @Valid
     @NotNull
+    @JsonProperty("database")
     private DataSourceFactory database = new DataSourceFactory();
 
-    @JsonProperty("database")
     public DataSourceFactory getDatabase() {
         return database;
     }

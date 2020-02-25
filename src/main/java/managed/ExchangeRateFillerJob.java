@@ -50,7 +50,6 @@ public class ExchangeRateFillerJob implements Managed {
             try {
                 updateExchangeRates(config.getExchangeRateCurrencyFillerConfigList());
             } catch (Exception e) {
-                e.printStackTrace();
                 //log instead
             }
         };
@@ -71,7 +70,8 @@ public class ExchangeRateFillerJob implements Managed {
         configs.stream().forEach(config -> {
             exchangeRateService.refreshLatestExchangeRates(config.getSourceCurrency(),
                     config.getTargetCurrency());
-            //Backfill till configured or current date, if opted for
+            //Backfill can be further optimised to run in batches
+            //Backfill till configured or current date if not given
             if (config.isBackfillEnabled()) {
                 exchangeRateService.backfillExchangeRates(config.getSourceCurrency(), config.getTargetCurrency(),
                         config.getBackfillFrom(), config.getBackfillTill() == null ? new Date() : config.getBackfillTill());

@@ -11,7 +11,8 @@ public interface ExchangeRateService {
 
     ExchangeRate getLatestExchangeRate(CurrencyCode sourceCurrency, CurrencyCode targetCurrency);
 
-    List<ExchangeRate> getHistoricalData(Timestamp from, Timestamp to, CurrencyCode currencyCode);
+    List<ExchangeRate> getHistoricalData(Timestamp from, Timestamp to, CurrencyCode sourceCurrency,
+                                         CurrencyCode targetCurrency);
 
     ExchangeRate refreshLatestExchangeRates(CurrencyCode sourceCurrency, CurrencyCode targetCurrency);
 
