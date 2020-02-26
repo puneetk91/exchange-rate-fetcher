@@ -18,7 +18,7 @@
             <column name="target_currency_code" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="value" type="bigint">
+            <column name="value" type="decimal(10,2)">
                 <constraints nullable="false"/>
             </column>
             <column name="value_at" type="datetime(6)">
