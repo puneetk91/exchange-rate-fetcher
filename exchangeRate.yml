@@ -1,10 +1,11 @@
+#server settings
 server:
   rootPath: /exchange/*
   applicationConnectors:
     - type: http
-      port: 25100
+      port: 25200
 
-# database settings
+#database settings
 database:
   driverClass: "com.mysql.jdbc.Driver"
   user: "root"
@@ -18,7 +19,7 @@ database:
   maxSize: 32
   checkConnectionWhileIdle: false
 
-# Logging settings.
+#Logging settings.
 logging:
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
   level: INFO
@@ -37,7 +38,7 @@ logging:
           archivedLogFilenamePattern: ./logs/example-sql-%d.log.gz
           archivedFileCount: 5
 
-#Exchange rate filler com.exchangerate.config for the scheduled job
+#Exchange rate filler for the scheduled job
 exchangeRateFillerConfig:
   enabled: true
   concurrency: 1
@@ -46,7 +47,4 @@ exchangeRateFillerConfig:
   exchangeRateCurrencyFillerConfigList:
     - sourceCurrency: BITCOIN
       targetCurrency: USD
-      backfillEnabled: true
-      backfillFrom: 2019-01-01 #yyyy-MM-dd
-      backfillTill: 2019-02-28 #yyyy-MM-dd
 

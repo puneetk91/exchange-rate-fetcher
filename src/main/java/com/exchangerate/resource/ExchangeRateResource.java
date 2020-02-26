@@ -3,6 +3,7 @@ package com.exchangerate.resource;
 import com.exchangerate.dto.CurrencyCode;
 import com.exchangerate.dto.ExchangeRate;
 import com.exchangerate.service.ExchangeRateService;
+import io.dropwizard.hibernate.UnitOfWork;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -25,9 +26,10 @@ public class ExchangeRateResource {
 
     @GET
     @Path("/source/bitcoin/target/{target_currency}")
+    @UnitOfWork
     public Response getExchangeRates(@PathParam("target_currency") @DefaultValue("USD") CurrencyCode targetCurrency,
-                                     @QueryParam("from_time")Timestamp from,
-                                     @QueryParam("to_time")Timestamp to,
+                                     @QueryParam("from_time")Long from,
+                                     @QueryParam("to_time")Long to,
                                      @QueryParam("latest") Boolean latest) {
 
         List<ExchangeRate> exchangeRateList = new ArrayList<>();
@@ -36,11 +38,29 @@ public class ExchangeRateResource {
         if (TRUE.equals(latest)) {
             exchangeRateList.add(exchangeRateService.getLatestExchangeRate(sourceCurrency, targetCurrency));
         } else {
-            if (from == null || to == null)
+            if (from == null || to == null || to.compareTo(from) < 0)
                 throw new BadRequestException("Both from_time and to_time values should be non null for historical data!");
-            exchangeRateList.addAll(exchangeRateService.getHistoricalData(from, to, sourceCurrency, targetCurrency));
+            exchangeRateList.addAll(exchangeRateService.getHistoricalData(new Timestamp(from), new Timestamp(to), sourceCurrency, targetCurrency));
         }
         return Response.ok().entity(exchangeRateList).build();
+    }
+
+    //Backfill can be further optimised to run in batches
+    @POST
+    @Path("/source/bitcoin/target/{target_currency}/backfill")
+    @UnitOfWork
+    public Response backfillExchangeRates(@PathParam("target_currency") @DefaultValue("USD") CurrencyCode targetCurrency,
+                                     @QueryParam("from_time") Long from,
+                                     @QueryParam("to_time") Long to) {
+
+        //source `bitcoin` can be parameterised here
+        CurrencyCode sourceCurrency = CurrencyCode.BITCOIN;
+        if (from == null || to == null || to.compareTo(from) < 0)
+            throw new BadRequestException("Both from_time and to_time values should be non null for historical data!");
+
+        exchangeRateService.backfillExchangeRates(sourceCurrency, targetCurrency, new Timestamp(from), new Timestamp(to));
+
+        return Response.ok().build();
     }
 
 }

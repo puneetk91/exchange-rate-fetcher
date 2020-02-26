@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.exchangerate.util.TimestampUtil.addToTimestamp;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class ExchangeRateServiceImpl implements ExchangeRateService {
@@ -60,7 +61,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     @Override
     public ExchangeRate refreshLatestExchangeRates(CurrencyCode sourceCurrency, CurrencyCode targetCurrency) {
-        com.exchangerate.entity.ExchangeRate exchangeRate = getExchangeRate(sourceCurrency, targetCurrency);
+        com.exchangerate.entity.ExchangeRate exchangeRate = refreshExchangeRate(sourceCurrency, targetCurrency);
         return mapper.mapToDto(exchangeRate);
     }
 
@@ -72,14 +73,13 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     public void backfillExchangeRates(CurrencyCode sourceCurrency, CurrencyCode targetCurrency, Date backfillFrom,
                                       Date backfillTill) {
         Timestamp temp = Timestamp.from(backfillFrom.toInstant());
-        while (temp.before(backfillTill)) {
-            exchangeRateDao.createOrUpdate(getExchangeRate(sourceCurrency, targetCurrency));
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, 15);
+        while (temp.before(Timestamp.from(backfillTill.toInstant()))) {
+            refreshExchangeRate(sourceCurrency, targetCurrency);
+            temp = addToTimestamp(temp, 15, Calendar.MINUTE);
         }
     }
 
-    private com.exchangerate.entity.ExchangeRate getExchangeRate(CurrencyCode sourceCurrency, CurrencyCode targetCurrency) {
+    private com.exchangerate.entity.ExchangeRate refreshExchangeRate(CurrencyCode sourceCurrency, CurrencyCode targetCurrency) {
         ExchangeRateDataClientResponse response = exchangeRateDataClient
                 .getExchangeRate(Timestamp.from(Instant.now()), sourceCurrency, targetCurrency);
         com.exchangerate.entity.ExchangeRate exchangeRate = mapper.mapToEntity(response);

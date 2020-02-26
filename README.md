@@ -20,13 +20,36 @@ We can also integrate this to some other real com.exchangerate.client to fetch t
 currency and for one given time.
 
 ### How to run
-1. Install MySql and Java
+1. This project requires MySql8 and Java8. Please make sure it's there in your system.
 2. Download this repo and run below commands in the repo directory
 
     - Run `mvn clean install`
     - Create database named : `exchange-rate`
-    - Run liquibase migrations to update the database:
-`mvn liquibase migrations.xml`
-    - Run `java -jar target/ExchangeRate-1.0-SNAPSHOT.jar server src/main/java/com.exchangerate.config/exchangeRate.yml`
+    - For initial setup, you can use the DB dump in this project `dump.sql`(We can also run the changesets otherwise).
+    by running `mysql -u username -p exchange-rate < file.sql`.
+    You can find DB details in `exchange-rate`.
+    - Finally you can run the server with: `java -jar target/ExchangeRate-1.0-SNAPSHOT.jar server exchangeRate.yml`
 
 ### API Documentation
+For API Documentation, you can refer to `exchange-rate.postman_collection.json` postman collection in this project.
+There are 3 APIs:
+1. Get Latest Exchange rate for given source and target currencies.
+2. Get Historical Data given a time range and given source and target currencies.
+3. Backfill data given a time range and given source and target currencies.
+
+Along with this, there is a job running which refreshes the latest exchange rate value. 
+This can be enabled/disabled or you can change it's frequency by updating the config in `exchangeRate.yml`
+
+### DB Modelling
+
+There is currently only one table which stores the exchange rates and it looks like this:
+
+`
++----+----------------------+----------------------+-------+----------------------------+----------------------------+----------------------------+
+| id | source_currency_code | target_currency_code | value | value_at                   | created_at                 | updated_at                 |
++----+----------------------+----------------------+-------+----------------------------+----------------------------+----------------------------+
+|  1 | BITCOIN              | USD                  | 21594 | 2020-02-26 16:23:25.297843 | 2020-02-26 16:23:25.461000 | 2020-02-26 16:23:25.461000 |
++----+----------------------+----------------------+-------+----------------------------+----------------------------+----------------------------+
+`
+
+We can also add a table to keep a track of backfilling.

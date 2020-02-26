@@ -21,7 +21,7 @@
             <column name="value" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="valueAt" type="datetime(6)">
+            <column name="value_at" type="datetime(6)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="datetime(6)">
@@ -34,7 +34,7 @@
     </changeSet>
     <changeSet id="2" author="puneet">
         <createIndex tableName="exchange_rates" indexName="idx_exch_valueAt">
-            <column name="valueAt"/>
+            <column name="value_at"/>
         </createIndex>
     </changeSet>
 </databaseChangeLog>

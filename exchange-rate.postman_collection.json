@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "a8f5aa48-5651-4c5d-ae56-498cdb45cb71",
+		"name": "exchange-rate",
+		"description": "This is the API documentation for APIs in Exchange rate service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Latest Exchange Rate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:25200/exchange/v0.1/exchange-rate/source/bitcoin/target/USD?latest=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "25200",
+					"path": [
+						"exchange",
+						"v0.1",
+						"exchange-rate",
+						"source",
+						"bitcoin",
+						"target",
+						"USD"
+					],
+					"query": [
+						{
+							"key": "latest",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get historical data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:25200/exchange/v0.1/exchange-rate/source/bitcoin/target/USD?from_time=1582588800000&to_time=1582761600000&latest=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "25200",
+					"path": [
+						"exchange",
+						"v0.1",
+						"exchange-rate",
+						"source",
+						"bitcoin",
+						"target",
+						"USD"
+					],
+					"query": [
+						{
+							"key": "from_time",
+							"value": "1582588800000",
+							"description": "time in milliseconds"
+						},
+						{
+							"key": "to_time",
+							"value": "1582761600000",
+							"description": "time in milliseconds"
+						},
+						{
+							"key": "latest",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backfill historical data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:25200/exchange/v0.1/exchange-rate/source/bitcoin/target/USD/backfill?from_time=1582588800000&to_time=1582761600000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "25200",
+					"path": [
+						"exchange",
+						"v0.1",
+						"exchange-rate",
+						"source",
+						"bitcoin",
+						"target",
+						"USD",
+						"backfill"
+					],
+					"query": [
+						{
+							"key": "from_time",
+							"value": "1582588800000",
+							"description": "time in milliseconds"
+						},
+						{
+							"key": "to_time",
+							"value": "1582761600000",
+							"description": "time in milliseconds"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

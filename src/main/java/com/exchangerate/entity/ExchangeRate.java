@@ -1,6 +1,8 @@
 package com.exchangerate.entity;
 
 import com.exchangerate.dto.CurrencyCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -8,7 +10,7 @@ import java.sql.Timestamp;
 
 @Table
 @Entity(name = "exchange_rates")
-public class ExchangeRate extends TrackableEntity {
+public class ExchangeRate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,21 +30,33 @@ public class ExchangeRate extends TrackableEntity {
     @Column(name = "value_at", nullable = false)
     private Timestamp valueAt;
 
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private Timestamp updatedAt;
+
+    public ExchangeRate() {
+    }
+
     public ExchangeRate(CurrencyCode sourceCurrency, CurrencyCode targetCurrency, BigDecimal value, Timestamp valueAt) {
-        super.sanitizeTimestamps();
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
         this.value = value;
         this.valueAt = valueAt;
     }
 
-    public ExchangeRate(long id, CurrencyCode sourceCurrency, CurrencyCode targetCurrency, BigDecimal value, Timestamp valueAt) {
-        super.sanitizeTimestamps();
+    public ExchangeRate(long id, CurrencyCode sourceCurrency, CurrencyCode targetCurrency, BigDecimal value, Timestamp valueAt,
+                        Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
         this.value = value;
         this.valueAt = valueAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static ExchangeRateBuilder builder() {
@@ -65,6 +79,22 @@ public class ExchangeRate extends TrackableEntity {
         return valueAt;
     }
 
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 
     public static class ExchangeRateBuilder {
         private long id;
@@ -72,6 +102,8 @@ public class ExchangeRate extends TrackableEntity {
         private CurrencyCode targetCurrency;
         private BigDecimal value;
         private Timestamp valueAt;
+        private Timestamp createdAt;
+        private Timestamp updatedAt;
 
         ExchangeRateBuilder() {
         }
@@ -101,12 +133,24 @@ public class ExchangeRate extends TrackableEntity {
             return this;
         }
 
+        public ExchangeRateBuilder createdAt(Timestamp valueAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public ExchangeRateBuilder updatedAt(Timestamp updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         public ExchangeRate build() {
-            return new ExchangeRate(id, sourceCurrency, targetCurrency, value, valueAt);
+            return new ExchangeRate(id, sourceCurrency, targetCurrency, value, valueAt, createdAt, updatedAt);
         }
 
         public String toString() {
-            return "ExchangeRate.ExchangeRateBuilder(id=" + this.id + ", sourceCurrency=" + this.sourceCurrency + ", targetCurrency=" + this.targetCurrency + ", value=" + this.value + ", valueAt=" + this.valueAt + ")";
+            return "ExchangeRate.ExchangeRateBuilder(id=" + this.id + ", sourceCurrency=" + this.sourceCurrency + ", " +
+                    "targetCurrency=" + this.targetCurrency + ", value=" + this.value + ", valueAt=" + this.valueAt + ", " +
+                    "createdAt=" + this.createdAt + ", updatedAt=" + this.updatedAt + ")";
         }
     }
 }

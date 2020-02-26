@@ -5,6 +5,7 @@ import com.exchangerate.dto.ExchangeRateFillerConfig;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
 
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -13,11 +14,10 @@ public class ExchangeRateConfiguration extends Configuration {
     @Valid
     @NotNull
     @JsonProperty("database")
-    private DataSourceFactory database = new DataSourceFactory();
-
-    public DataSourceFactory getDatabase() {
-        return database;
-    }
+    public DataSourceFactory database = new DataSourceFactory();
+//
+//    @JsonProperty("swagger")
+//    public SwaggerBundleConfiguration swaggerBundleConfiguration;
 
     @NotNull
     @JsonProperty("exchangeRateFillerConfig")
