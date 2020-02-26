@@ -4,8 +4,8 @@ currencies.
 
 Note: 
 - Currently it only supports **USD** and **BITCOIN**. 
-The mock client written only returns data for a given currency as of now. 
-We can also integrate this to some other real client to fetch this data.
+The mock com.exchangerate.client written only returns data for a given currency as of now. 
+We can also integrate this to some other real com.exchangerate.client to fetch this data.
 - Using `BigDecimal` as the datatype for Currency, we can use datatypes like
 `MonetaryMoney`, `Currency` or implement our own datatype to improve the precision. 
 
@@ -16,7 +16,7 @@ We can also integrate this to some other real client to fetch this data.
 
 
 ##### Assumptions made:
-- client(external service) only provides API to fetch Exchange Rates for a single source and target 
+- com.exchangerate.client(external com.exchangerate.service) only provides API to fetch Exchange Rates for a single source and target 
 currency and for one given time.
 
 ### How to run
@@ -27,6 +27,6 @@ currency and for one given time.
     - Create database named : `exchange-rate`
     - Run liquibase migrations to update the database:
 `mvn liquibase migrations.xml`
-    - Run `java -jar target/ExchangeRate-1.0-SNAPSHOT.jar server src/main/java/config/exchangeRate.yml`
+    - Run `java -jar target/ExchangeRate-1.0-SNAPSHOT.jar server src/main/java/com.exchangerate.config/exchangeRate.yml`
 
 ### API Documentation

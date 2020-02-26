@@ -32,4 +32,9 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="puneet">
+        <createIndex tableName="exchange_rates" indexName="idx_exch_valueAt">
+            <column name="valueAt"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

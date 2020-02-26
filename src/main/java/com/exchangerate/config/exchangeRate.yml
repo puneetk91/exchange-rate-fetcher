@@ -1,0 +1,52 @@
+server:
+  rootPath: /exchange/*
+  applicationConnectors:
+    - type: http
+      port: 25100
+
+# database settings
+database:
+  driverClass: "com.mysql.jdbc.Driver"
+  user: "root"
+  password: "password"
+  url: "jdbc:mysql://127.0.0.1/exchange-rate"
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.MySQLInnoDBDialect
+  maxWaitForConnection: 1s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+
+# Logging settings.
+logging:
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+  # Logger-specific levels.
+  loggers:
+    # Overrides the level of com.example.dw.Thing and sets it to DEBUG.
+    "com.example.dw.Thing": DEBUG
+    # Enables the SQL query log and redirect it to a separate file
+    "org.hibernate.SQL":
+      level: DEBUG
+      # This line stops org.hibernate.SQL (or anything under it) from using the root logger
+      additive: false
+      appenders:
+        - type: file
+          currentLogFilename: ./logs/example-sql.log
+          archivedLogFilenamePattern: ./logs/example-sql-%d.log.gz
+          archivedFileCount: 5
+
+#Exchange rate filler com.exchangerate.config for the scheduled job
+exchangeRateFillerConfig:
+  enabled: true
+  concurrency: 1
+  timeInterval: 15
+  timeUnit: MINUTES
+  exchangeRateCurrencyFillerConfigList:
+    - sourceCurrency: BITCOIN
+      targetCurrency: USD
+      backfillEnabled: true
+      backfillFrom: 2019-01-01 #yyyy-MM-dd
+      backfillTill: 2019-02-28 #yyyy-MM-dd
+
